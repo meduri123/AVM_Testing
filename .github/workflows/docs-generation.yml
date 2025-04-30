@@ -1,0 +1,30 @@
+name: Generate Terraform Docs
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'modules/**/*.tf'
+      - '.terraform-docs.yml'
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Generate Terraform Docs
+        uses: terraform-docs/gh-actions@main
+        with:
+          working-dir: modules/resource_group
+          output-file: README.md
+          output-method: inject
+          config-file: .terraform-docs.yml
+      
+      - name: Commit changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add modules/resource_group/README.md
+          git diff --quiet && git diff --staged --quiet || git commit -m "Automatically generated Terraform docs [skip ci]"
+          git push
