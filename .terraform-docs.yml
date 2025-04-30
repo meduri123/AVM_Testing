@@ -1,0 +1,18 @@
+formatter: "markdown table"
+version: "0.20.0"
+header-from: "main.tf"
+footer-from: ""
+output-file: "README.md"
+output-mode: "inject"
+recursive:
+  enabled: true
+  path: "modules"
+sections:
+  hide: []
+  show:
+    - header
+    - inputs
+    - outputs
+sort:
+  enabled: true
+  by: "required"
